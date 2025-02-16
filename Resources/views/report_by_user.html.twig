@@ -201,19 +201,36 @@
                     <th>{{ 'header.date' | trans }}</th>
                     <th>{{ 'header.begin' | trans }}</th>
                     <th>{{ 'header.end' | trans }}</th>
+                    <th>Maßnahme</th>
+                    <th>Beschreibung</th>
                     <th>{{ 'header.duration' | trans }}</th>
-                    <th>{{ 'header.customer' | trans }}</th>
-                    <th>{{ 'header.project' | trans }}</th>
-                    <th>{{ 'header.activity' | trans }}</th>
-                    <th>{{ 'header.description' | trans }}</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for sheet in timesheet %}
-                    <tr>
-                        <td>{{ sheet['date'] }}</td>
+                    {% set beschreibung = (sheet['vorgefertigte_saetze_sbg'] ? sheet['vorgefertigte_saetze_sbg'] ~ ' ' : '') ~ 
+                             (sheet['vorgefertigte_saetze_spfh'] ? sheet['vorgefertigte_saetze_spfh'] ~ ' ' : '') ~ 
+                             (sheet['description'] ? sheet['description'] : '') %}
+                    {% if 'Indirekte Zeit' in sheet['projectName'] | trim %}
+                        <tr class="blue-row"> 
+                                    {# Need to add ".blue-row {
+                                        background-color: #e6ecff;
+                                    }" to CSS #}
+                    {% else %} 
+                        <tr>
+                    {% endif %}          
+                        <td>{{ sheet['date'] | date('d.m.y') }}</td>
                         <td>{{ sheet['begin'] }}</td>
                         <td>{{ sheet['end'] }}</td>
+                        <td>{{ sheet['activityName'] | replace({'Z- ': '', 'Z-': ''}) }}</td>
+                        <td>
+                            {% if beschreibung %}
+                                {{ beschreibung }}
+                            {% else %}
+                                <span style="color: red">KEINE BESCHREIBUNG</span>
+                            {% endif %}
+                        </td>
                         <td>
                             {{ sheet['duration'] | duration }}
 
@@ -223,11 +240,12 @@
                                     <i class="fa fa-1x fa-exclamation-circle" style="color: red"></i>
                                 </span>
                             {% endif %}
+                        <td>
+                            <a href="/de/team/timesheet/{{ sheet['timesheet_id'] }}/edit?page=1" class="btn btn-primary" target="_blank">
+                                <i class="fa fa-pencil-alt"></i>
+                            </a>
                         </td>
-                        <td>{{ sheet['customerName'] }}</td>
-                        <td>{{ sheet['projectName'] }}</td>
-                        <td>{{ sheet['activityName'] }}</td>
-                        <td>{{ sheet['description'] }}</td>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

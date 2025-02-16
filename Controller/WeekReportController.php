@@ -413,7 +413,11 @@ class WeekReportController extends BaseApprovalController
                             'customerName' => $timesheet->getProject()->getCustomer()->getName(),
                             'projectName' => $timesheet->getProject()->getName(),
                             'activityName' => $timesheet->getActivity()->getName(),
-                            'description' => $timesheet->getDescription()
+                            'description' => $timesheet->getDescription(),
+       /** Pulling Values of Custom Fields */
+                            'vorgefertigte_saetze_spfh' => $timesheet->getMetaField('vorgefertigte_saetze_spfh') ? $timesheet->getMetaField('vorgefertigte_saetze_spfh')->getValue() : null,
+                            'vorgefertigte_saetze_sbg' => $timesheet->getMetaField('vorgefertigte_saetze_sbg') ? $timesheet->getMetaField('vorgefertigte_saetze_sbg')->getValue() : null,
+                            'timesheet_id' => $timesheet->getId()
                         ];
                     }
 
