@@ -417,6 +417,7 @@ class WeekReportController extends BaseApprovalController
        /** Pulling Values of Custom Fields */
                             'vorgefertigte_saetze_spfh' => $timesheet->getMetaField('vorgefertigte_saetze_spfh') ? $timesheet->getMetaField('vorgefertigte_saetze_spfh')->getValue() : null,
                             'vorgefertigte_saetze_sbg' => $timesheet->getMetaField('vorgefertigte_saetze_sbg') ? $timesheet->getMetaField('vorgefertigte_saetze_sbg')->getValue() : null,
+                            'interner_kommentar' => $timesheet->getMetaField('interner_kommentar') ? $timesheet->getMetaField('interner_kommentar')->getValue() : null,
                             'timesheet_id' => $timesheet->getId()
                         ];
                     }
