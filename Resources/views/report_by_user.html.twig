@@ -17,6 +17,13 @@
         {{ widgets.callout('danger', 'warning.currentUserSundayIssue'|trans) }}
     {% endif %}
 
+                {% set warnung = 0 %}
+                {% for sheet in timesheet %}
+                    {% if sheet['interner_kommentar'] is not empty %}
+                    {% set warnung = 1 %}
+                    {% endif %}
+                {% endfor %}
+
     <div class="card mb-4">
         <div class="card-body {{ status_color_class(status) }}">
             {{ form_start(form, {'attr': {'class': 'form-inline', 'id': 'user_approval_form'}}) }}
@@ -44,12 +51,18 @@
                     </a>
                 {% endif %}
                     {% if (status == 'submitted') and (user.id != currentUser or canManageHimself) %}
-                    <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title="{{ 'tooltip.approve'|trans }}">
-                        <i class="fa fa-1x fa-check-circle"></i>
-                    </a>
-                    <a id="deniedButton" class="btn btn-default btn-create closeModal" title="{{ 'tooltip.reject'|trans }}" data-bs-toggle="modal" data-bs-target="#deniedMessage">
-                        <i class="fa fa-1x fa-times-circle"></i>
-                    </a>
+                         {% if warnung == 1 %}
+                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create red-row" title="Genehmigen>
+                            <i class="fa fa-1x fa-check-circle"></i>
+                        </a>
+                         {% else %} 
+                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title=Genehmigen>
+                            <i class="fa fa-1x fa-check-circle"></i>
+                        </a>
+                         {% endif %}
+                        <a id="deniedButton" class="btn btn-default btn-create closeModal" title="{{ 'tooltip.reject'|trans }}" data-bs-toggle="modal" data-bs-target="#deniedMessage">
+                            <i class="fa fa-1x fa-times-circle"></i>
+                        </a>
                 {% elseif (status is empty or status == 'not_submitted') %}
                     <a class="btn btn-default btn-create" title="{{ 'tooltip.submit'|trans }}"
                         {% if (approvePreviousWeeksMessage and approvePreviousWeeksMessage < (current | date_format('Y-m-d'))) %}
@@ -212,7 +225,12 @@
                     {% set beschreibung = (sheet['vorgefertigte_saetze_sbg'] ? sheet['vorgefertigte_saetze_sbg'] ~ ' ' : '') ~ 
                              (sheet['vorgefertigte_saetze_spfh'] ? sheet['vorgefertigte_saetze_spfh'] ~ ' ' : '') ~ 
                              (sheet['description'] ? sheet['description'] : '') %}
-                    {% if 'Indirekte Zeit' in sheet['projectName'] | trim %}
+                    {% if sheet['interner_kommentar'] is not empty %}
+                        <tr class="red-row"> 
+                                    {# Need to add ".red-row {
+                                        background-color: #e6ecff;
+                                    }" to CSS #} 
+                    {% elseif 'Indirekte Zeit' in sheet['projectName'] | trim %}
                         <tr class="blue-row"> 
                                     {# Need to add ".blue-row {
                                         background-color: #e6ecff;
