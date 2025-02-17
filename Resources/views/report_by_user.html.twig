@@ -52,11 +52,11 @@
                 {% endif %}
                     {% if (status == 'submitted') and (user.id != currentUser or canManageHimself) %}
                          {% if warnung == 1 %}
-                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create red-row" title="Genehmigen>
+                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create red-row" title="Genehmigen">
                             <i class="fa fa-1x fa-check-circle"></i>
                         </a>
                          {% else %} 
-                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title=Genehmigen>
+                        <a href="{{ path('approve',{'approveId':approveId,'user':user.id,'date':current|date('Y-m-d')}) }}" class="btn btn-default btn-create" title="Genehmigen">
                             <i class="fa fa-1x fa-check-circle"></i>
                         </a>
                          {% endif %}
