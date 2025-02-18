@@ -132,11 +132,14 @@ class WeekReportController extends BaseApprovalController
         
         $userTitle = $selectedUser->getTitle();       
 
-        $userPreference = $selectedUser->getPreference('mitarbeiter_innen_kommentar');
+        $userPreference = $selectedUser->getPreference('stunden_freigabe_kommentar');
         $mitarbeiterInnenKommentar = $userPreference ? $userPreference->getValue() : null;
 
         $stundenFreigabeWarnungPreference = $selectedUser->getPreference('stunden_freigabe_warnung');
         $stundenFreigabeWarnung = $stundenFreigabeWarnungPreference ? $stundenFreigabeWarnungPreference->getValue() : null;
+
+        $stundenFreigabeKlientPreference = $selectedUser->getPreference('stunden_freigabe_klient');
+        $stundenFreigabeKlient = $stundenFreigabeKlientPreference ? $stundenFreigabeKlientPreference->getValue() : null;
 
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($selectedUser, $startWeek),
@@ -167,7 +170,8 @@ class WeekReportController extends BaseApprovalController
             'username' => $username,
             'userTitle' => $userTitle,
             'mitarbeiterInnenKommentar' => $mitarbeiterInnenKommentar,
-            'stundenFreigabeWarnung' => $stundenFreigabeWarnung
+            'stundenFreigabeWarnung' => $stundenFreigabeWarnung,
+            'stundenFreigabeKlient' => $stundenFreigabeKlient
         ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 

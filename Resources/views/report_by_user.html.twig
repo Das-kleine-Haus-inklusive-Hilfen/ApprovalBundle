@@ -5,6 +5,49 @@
 {% block report_title %}{{ report_title|trans }}{% endblock %}
 
 {% block report %}
+
+    <style>
+        .highlight {
+            background-color: none;
+            font-weight: bold;
+        }
+        .responsive-table {
+            width: 100%;
+        }
+        .responsive-table td {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+        .responsive-table td:last-child {
+            text-align: right;
+        }
+        @media (min-width: 768px) {
+            .responsive-table {
+                display: table;
+            }
+            .responsive-table td {
+                display: table-cell;
+                width: 33.33%;
+                border-bottom: none;
+                padding: 0 10px;
+                word-wrap: break-word;
+                 white-space: pre-wrap;
+            }
+        }
+        .freigabe-mitarbeiter-kommentar {
+            background-color: #FF6347;
+        }
+        .red-row {
+            background-color: #FF6347;
+        }
+        .blue-row {
+            background-color: #e6ecff;
+        }
+    </style>
+
     {% if approvePreviousWeeksMessage and approvePreviousWeeksMessage < (current | date_format('Y-m-d')) %}
         {{ widgets.callout('danger', 'warning.add_to_approve_previous_weeks'|trans) }}
     {% endif %}
@@ -83,20 +126,23 @@
         </div>
         {% if hasTeamleadRole or isSuperAdmin != 0 %}
             {% if stundenFreigabeWarnung == 1 %}
-            <div class="freigabe-mitarbeiter-kommentar" style="padding: 20px 0;">
+            <div class="freigabe-mitarbeiter-kommentar" style="padding: 10px 0;">
             {% else  %}
-            <div style="padding: 20px 0;">
+            <div style="padding: 10px 0;">
             {% endif %}
                 <div style="padding: 20px;">
-                    <table style="width: 100%; float: left;">
+                    <table class="responsive-table">
                         <tr>
-                        {% if userTitle %}
-                            <td>Position: {{ userTitle }}</td>
-                        {% endif %}
-                        {% if mitarbeiterInnenKommentar %}
-                             <td>Personal Kommentar: {{ mitarbeiterInnenKommentar }}</td>
-                        {% endif %}
-                            <td style="float: right;">
+                            {% if userTitle %}
+                                <td><span class="highlight">Position:</span> {{ userTitle }}</td>
+                            {% endif %}
+                            {% if stundenFreigabeKlient %}
+                                <td><span class="highlight">Klienten:</span> {{ stundenFreigabeKlient }}</td>
+                            {% endif %}
+                            {% if mitarbeiterInnenKommentar %}
+                                <td><span class="highlight">Kommentar:</span> {{ mitarbeiterInnenKommentar }}</td>
+                            {% endif %}
+                            <td>
                                 <a href="/de/profile/{{ username }}/prefs" class="btn btn-primary" target="_blank">
                                     <i class="fa fa-cog"></i>
                                 </a>
