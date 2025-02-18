@@ -132,7 +132,7 @@ class WeekReportController extends BaseApprovalController
         
         $userTitle = $selectedUser->getTitle();       
 
-        $userPreference = $selectedUser->getPreference('stunden_freigabe_kommentar');
+        $userPreference = $selectedUser->getPreference('mitarbeiter_innen_kommentar');
         $mitarbeiterInnenKommentar = $userPreference ? $userPreference->getValue() : null;
 
         $stundenFreigabeWarnungPreference = $selectedUser->getPreference('stunden_freigabe_warnung');
