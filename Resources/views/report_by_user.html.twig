@@ -81,6 +81,31 @@
             </span>
             {{ form_end(form) }}
         </div>
+        {% if hasTeamleadRole or isSuperAdmin != 0 %}
+            {% if stundenFreigabeWarnung == 1 %}
+            <div class="freigabe-mitarbeiter-kommentar" style="padding: 20px 0;">
+            {% else  %}
+            <div style="padding: 20px 0;">
+            {% endif %}
+                <div style="padding: 20px;">
+                    <table style="width: 100%; float: left;">
+                        <tr>
+                        {% if userTitle %}
+                            <td>Position: {{ userTitle }}</td>
+                        {% endif %}
+                        {% if mitarbeiterInnenKommentar %}
+                             <td>Personal Kommentar: {{ mitarbeiterInnenKommentar }}</td>
+                        {% endif %}
+                            <td style="float: right;">
+                                <a href="/de/profile/{{ username }}/prefs" class="btn btn-primary" target="_blank">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <div id="history" class="mb-4" style="display: none">

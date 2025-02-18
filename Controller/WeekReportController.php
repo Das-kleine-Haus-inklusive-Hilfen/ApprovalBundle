@@ -128,6 +128,16 @@ class WeekReportController extends BaseApprovalController
         $canManageHimself = $this->securityTool->canViewAllApprovals() || ($this->securityTool->canViewTeamApprovals() &&
             ($this->settingsTool->getConfiguration(ConfigEnum::APPROVAL_TEAMLEAD_SELF_APPROVE_NY) == '1'));
 
+        $username = $selectedUser->getUsername();   
+        
+        $userTitle = $selectedUser->getTitle();       
+
+        $userPreference = $selectedUser->getPreference('mitarbeiter_innen_kommentar');
+        $mitarbeiterInnenKommentar = $userPreference ? $userPreference->getValue() : null;
+
+        $stundenFreigabeWarnungPreference = $selectedUser->getPreference('stunden_freigabe_warnung');
+        $stundenFreigabeWarnung = $stundenFreigabeWarnungPreference ? $stundenFreigabeWarnungPreference->getValue() : null;
+
         return $this->render('@Approval/report_by_user.html.twig', [
             'approve' => $this->parseToHistoryView($selectedUser, $startWeek),
             'week' => $this->formatting->parseDate($startWeek instanceof DateTime ? $startWeek : new DateTime($startWeek)),
@@ -152,7 +162,12 @@ class WeekReportController extends BaseApprovalController
             'timesheet' => $timesheets,
             'approvePreviousWeeksMessage' => $this->approvalRepository->getNextApproveWeek($selectedUser),
             'selectedUserSundayIssue' => $selectedUserSundayIssue,
-            'currentUserSundayIssue' => $currentUserSundayIssue
+            'currentUserSundayIssue' => $currentUserSundayIssue,
+            'hasTeamleadRole' => $this->getUser()->hasTeamleadRole(),
+            'username' => $username,
+            'userTitle' => $userTitle,
+            'mitarbeiterInnenKommentar' => $mitarbeiterInnenKommentar,
+            'stundenFreigabeWarnung' => $stundenFreigabeWarnung
         ] + $this->getDefaultTemplateParams($this->settingsTool));
     }
 
